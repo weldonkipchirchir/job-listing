@@ -1,9 +1,21 @@
-export const links = [
+export const guestLinks = [
+    { link: "/", name: "Home" },
+    // { link: "/sign-up", name: "Sign Up" },
+    { link: "/sign-in", name: "Sign In" },
+  ];
+export const userLinks = [
     { link: "/", name: "Home" },
     { link: "/job-listing", name: "Job Listing" },
+    { link: "/applications-info", name: "Applications" },
+    { link: "/bookmarks", name: "Bookmarks" },
+    { link: "/find-job", name: "Find Jobs" },
     { link: "/about-us", name: "About us" },
-    { link: "/sign-up", name: "Sign Up" },
-    { link: "/sign-in", name: "Sign In" },
+  ];
+export const adminLinks = [
+    { link: "/dashboard", name: "Dashboard" },
+    { link: "/jobs-listing", name: "Job Listing" },
+    { link: "/applications", name: "Applications" },
+    { link: "/about-us", name: "About us" },
   ];
 
   export const getActiveStyles = (isActive, name) => {
@@ -19,7 +31,6 @@ export const links = [
         backgroundColor: "#b6174b",
         color: "white",
         borderRadius: "5px",
-        boxShadow: "5px 5px 5px rgba(0,0,0,0.9)",
       };
     }
 
@@ -146,8 +157,8 @@ export const jobTypes =
     "Remote",
     "Onsite",
     "Internship",
-    "Part Time",
-    "Full Time", 
+    "Part-Time",
+    "Full-Time", 
     "Contract"
   ]
 
