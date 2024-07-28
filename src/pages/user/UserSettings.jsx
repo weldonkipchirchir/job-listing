@@ -1,13 +1,12 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { updateUser } from "../../hooks/api";
 
 const UserSettings = () => {
   const [formData, setFormData] = useState({
-    address: "",
     name: "",
+    address: "",
     phone: "",
-    email: "",
-    addressTextarea: "",
     newPassword: "",
     confirmPassword: "",
   });
@@ -22,30 +21,29 @@ const UserSettings = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Compare passwords
     if (formData.newPassword !== formData.confirmPassword) {
       setPasswordError("Passwords do not match");
       return;
     }
 
-    // Submit password only
-    const passwordData = {
-      newPassword: formData.newPassword,
-    };
-
-    console.log(passwordData);
-
-    console.log(formData);
+    try {
+      const userData = {
+        name: formData.name,
+        address: formData.address,
+        phone: formData.phone,
+        password: formData.newPassword,
+      };
+      await updateUser(userData);
+    } catch (error) {
+      console.log(error);
+    }
 
     setFormData(() => ({
       address: "",
       name: "",
       phone: "",
-      email: "",
-      addressTextarea: "",
       newPassword: "",
       confirmPassword: "",
     }));
@@ -58,7 +56,7 @@ const UserSettings = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 1 }}
       transition={{ duration: 1 }}
-      className="max-w-4xl mx-auto px-4 py-8"
+      className="max-w-4xl mx-auto px-4 py-8 min-h-[80vh]"
     >
       <div className="bg-white p-6 rounded-lg shadow-md dark:bg-gray-900 dark:shadow-slate-400">
         <h2 className="text-4xl font-bold mb-3 dark:text-white">Settings</h2>
@@ -85,18 +83,6 @@ const UserSettings = () => {
               </div>
               <div>
                 <label className="block text-gray-700 font-semibold mb-2 dark:text-gray-100">
-                  Address
-                </label>
-                <input
-                  type="text"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2 dark:text-gray-100">
                   Phone
                 </label>
                 <input
@@ -109,27 +95,13 @@ const UserSettings = () => {
               </div>
               <div>
                 <label className="block text-gray-700 font-semibold mb-2 dark:text-gray-100">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2 dark:text-gray-100">
                   Address
                 </label>
-                <textarea
-                  type="address"
-                  name="addressTextarea"
-                  value={formData.addressTextarea}
+                <input
+                  type="text"
+                  name="address"
+                  value={formData.address}
                   onChange={handleChange}
-                  rows="4"
-                  cols="50"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white"
                 />
               </div>

@@ -11,7 +11,7 @@ function SIgnIn() {
       exit={{opacity:1}}
       transition={{duration:1.3}}
       >
-    <main className="padding min-md:h">
+    <main className="padding min-h-[80vh] ">
       <SignIn/>
     </main>
     </motion.div>

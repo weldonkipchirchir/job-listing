@@ -1,18 +1,14 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { updateUser } from "../../hooks/api";
 
 const Settings = () => {
   const [formData, setFormData] = useState({
-    companyName: "Acme Inc.",
     address: "",
     name: "",
     phone: "",
-    email: "",
-    currency: "USD",
-    addressTextarea: "",
     newPassword: "",
     confirmPassword: "",
-    analyticsID: "UA-123456789-1",
   });
 
   const [passwordError, setPasswordError] = useState("");
@@ -25,37 +21,32 @@ const Settings = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Compare passwords
     if (formData.newPassword !== formData.confirmPassword) {
       setPasswordError("Passwords do not match");
       return;
     }
 
-    // Submit password only
-    const passwordData = {
-      newPassword: formData.newPassword,
-    };
-
-    // Here, you can send the passwordData to your server or perform any other necessary actions
-    console.log(passwordData);
-
-    console.log(formData);
+    try {
+      const userData = {
+        name: formData.name,
+        address: formData.address,
+        phone: formData.phone,
+        password: formData.newPassword,
+      };
+      await updateUser(userData);
+    } catch (error) {
+      console.log(error);
+    }
 
     // Reset password fields and error message
     setFormData(() => ({
-        companyName: "Acme Inc.",
-        address: "",
-        name: "",
-        phone: "",
-        email: "",
-        currency: "USD",
-        addressTextarea: "",
-        newPassword: "",
-        confirmPassword: "",
-        analyticsID: "UA-123456789-1",
+      address: "",
+      name: "",
+      phone: "",
+      newPassword: "",
+      confirmPassword: "",
     }));
     setPasswordError("");
   };
@@ -66,7 +57,7 @@ const Settings = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 1 }}
       transition={{ duration: 1 }}
-      className="max-w-4xl mx-auto px-4 py-8"
+      className="max-w-4xl mx-auto px-4 py-8 min-h-[80vh] "
     >
       <div className="bg-white p-6 rounded-lg shadow-md dark:bg-gray-900 dark:shadow-slate-400">
         <h2 className="text-4xl font-bold mb-3 dark:text-white">Settings</h2>
@@ -75,20 +66,10 @@ const Settings = () => {
         </p>
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
-            <h3 className="text-xl font-semibold mb-3 dark:text-gray-50">Company Details</h3>
+            <h3 className="text-xl font-semibold mb-3 dark:text-gray-50">
+              Company Details
+            </h3>
             <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2 dark:text-gray-100">
-                  Company Name
-                </label>
-                <input
-                  type="text"
-                  name="companyName"
-                  value={formData.companyName}
-                  onChange={handleChange}
-                  className="w-full max-w-[600px] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white"
-                />
-              </div>
               <div>
                 <label className="block text-gray-700 font-semibold mb-2 dark:text-gray-100">
                   Address
@@ -125,52 +106,14 @@ const Settings = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white"
                 />
               </div>
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2 dark:text-gray-100">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2 dark:text-gray-100">
-                  Currency
-                </label>
-                <select
-                  name="currency"
-                  value={formData.currency}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white"
-                >
-                  <option value="USD">USD</option>
-                  <option value="USD">EUR</option>
-                  <option value="GBP">GBP</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2 dark:text-gray-100">
-                  Address
-                </label>
-                <textarea
-                  type="address"
-                  name="addressTextarea"
-                  value={formData.addressTextarea}
-                  onChange={handleChange}
-                  rows="4"
-                  cols="50"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white"
-                />
-              </div>
+
             </div>
           </div>
 
           <div className="mb-6">
-            <h3 className="text-xl font-semibold mb-3 dark:text-white">Security</h3>
+            <h3 className="text-xl font-semibold mb-3 dark:text-white">
+              Security
+            </h3>
             <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
               <div>
                 <label className="block text-gray-700 font-semibold mb-2 dark:text-gray-100">
@@ -200,22 +143,6 @@ const Settings = () => {
             {passwordError && (
               <p className="text-red-500 mt-2">{passwordError}</p>
             )}
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold mb-3 dark:text-white">Analytics</h3>
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2 dark:text-gray-100">
-                Google Analytics Tracking ID
-              </label>
-              <input
-                type="text"
-                name="analyticsID"
-                value={formData.analyticsID}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white"
-              />
-            </div>
           </div>
 
           <div className="mt-8 text-right">
