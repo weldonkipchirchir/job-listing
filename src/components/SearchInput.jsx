@@ -2,14 +2,15 @@
 import { useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
 
-const SearchInput = ({ placeholder, onSearch }) => {
+const SearchInput = ({ placeholder, onSearch, setHasSearched }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleInputChange = (e) => {
+    setHasSearched(false)
     setSearchTerm(e.target.value);
   };
 
-  const handleSearch = () => {
+  const handleSearch = async() => {
     onSearch(searchTerm);
   };
 
@@ -24,7 +25,7 @@ const SearchInput = ({ placeholder, onSearch }) => {
       <div className="relative">
         <input
           type="text"
-          className="px-4 py-2 pr-10 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-4 py-2 pr-10 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white"
           placeholder={placeholder || 'Search...'}
           value={searchTerm}
           onChange={handleInputChange}
