@@ -29,6 +29,13 @@ body{
     max-width: 1400px;
     margin: 0 auto;
   }
+  .highlight {
+    @apply transition-all duration-300;
+  }
+  
+  .highlight:hover {
+    @apply text-primary scale-110;
+  }
 }
 
 @layer utilities {
@@ -68,4 +75,14 @@ body{
   .h {
     @apply min-h-[80vh];
   }
+}
+
+.highlight {
+  color: inherit; /* Ensures the text starts with the same color as the paragraph */
+  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.highlight:hover {
+  color: var(--text-primary); /* Apply your primary color variable */
+  transform: scale(1.1); /* Slightly enlarge the text on hover */
 }
